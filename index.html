@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NitishPlay</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  background: #08091c;
+  color: white;
+}
+header {
+  padding: 22px;
+  text-align: center;
+  background: #11132c;
+  border-bottom: 2px solid #a855f7;
+}
+header h1 {
+  font-size: 32px;
+  color: #f5c542;
+}
+header h1 span {
+  color: #a855f7;
+}
+header p {
+  color: #aaa;
+  margin-top: 8px;
+}
+.hero {
+  text-align: center;
+  padding: 55px 15px;
+  background: linear-gradient(135deg,#17183d,#451675);
+}
+.hero h2 {
+  font-size: 30px;
+  color: #ffd700;
+  margin-bottom: 12px;
+}
+.hero p {
+  margin-bottom: 25px;
+  color: #ddd;
+}
+input, select {
+  padding: 13px;
+  border-radius: 8px;
+  border: 1px solid #a855f7;
+  background: #17182e;
+  color: white;
+  margin: 8px;
+  max-width: 90%;
+}
+#search {
+  width: 85%;
+  max-width: 400px;
+}
+nav {
+  text-align: center;
+  padding: 20px;
+}
+button {
+  padding: 12px 22px;
+  margin: 6px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(45deg,#a855f7,#6d28d9);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+.card {
+  background: #17182e;
+  width: 260px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 15px;
+  border: 1px solid #7e22ce;
+}
+.poster {
+  font-size: 65px;
+  padding: 25px;
+  background: #25264a;
+  border-radius: 12px;
+}
+.card h3 {
+  margin: 15px 0;
+  color: #ffd700;
+}
+.card p {
+  color: #aaa;
+}
+.admin {
+  margin: 30px 15px;
+  padding: 25px;
+  text-align: center;
+  background: #17182e;
+  border: 1px solid #a855f7;
+  border-radius: 15px;
+}
+.admin h2 {
+  color: #ffd700;
+  margin-bottom: 15px;
+}
+footer {
+  text-align: center;
+  padding: 25px;
+  background: #11132c;
+  color: #aaa;
+}
+@media(max-width:600px) {
+  .hero h2 { font-size: 24px; }
+  .card { width: 90%; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>👑 Nitish<span>Play</span></h1>
+  <p>Watch • Listen • Enjoy</p>
+</header>
+
+<section class="hero">
+  <h2>Welcome to NitishPlay</h2>
+  <p>Your Entertainment World</p>
+  <input type="text" id="search" placeholder="Search Movies or Songs...">
+</section>
+
+<nav>
+  <button onclick="showContent('all')">All</button>
+  <button onclick="showContent('movie')">Movies</button>
+  <button onclick="showContent('song')">Songs</button>
+</nav>
+
+<section class="content" id="content">
+  <div class="card" data-type="movie">
+    <div class="poster">🎬</div>
+    <h3>My First Movie</h3>
+    <p>Movies Collection</p>
+  </div>
+
+  <div class="card" data-type="song">
+    <div class="poster">🎵</div>
+    <h3>My First Song</h3>
+    <p>Songs Collection</p>
+  </div>
+</section>
+
+<section class="admin">
+  <h2>Admin Panel</h2>
+  <input type="text" id="mediaName" placeholder="Movie / Song Name">
+  <select id="mediaType">
+    <option value="movie">Movie</option>
+    <option value="song">Song</option>
+  </select>
+  <input type="file" id="mediaFile" accept="video/*,audio/*">
+  <button onclick="uploadContent()">Upload Content</button>
+</section>
+
+<footer>
+  <p>© 2026 NitishPlay | All Rights Reserved</p>
+</footer>
+
+<script>
+const search = document.getElementById("search");
+
+search.addEventListener("input", function() {
+  let value = search.value.toLowerCase();
+
+  document.querySelectorAll(".card").forEach(card => {
+    card.style.display = card.innerText.toLowerCase().includes(value)
+      ? "block" : "none";
+  });
+});
+
+function showContent(type) {
+  document.querySelectorAll(".card").forEach(card => {
+    card.style.display =
+      (type === "all" || card.dataset.type === type)
+      ? "block" : "none";
+  });
+}
+
+function uploadContent() {
+  const name = document.getElementById("mediaName").value;
+  const type = document.getElementById("mediaType").value;
+  const file = document.getElementById("mediaFile").files[0];
+
+  if (!name || !file) {
+    alert("Please enter name and select a file!");
+    return;
+  }
+
+  const url = URL.createObjectURL(file);
+  const card = document.createElement("div");
+  card.className = "card";
+  card.dataset.type = type;
+
+  const media = document.createElement(type === "movie" ? "video" : "audio");
+  media.src = url;
+  media.controls = true;
+  media.style.width = "100%";
+
+  const title = document.createElement("h3");
+  title.textContent = name;
+
+  card.appendChild(title);
+  card.appendChild(media);
+  document.getElementById("content").appendChild(card);
+
+  document.getElementById("mediaName").value = "";
+  document.getElementById("mediaFile").value = "";
+
+  alert("Content added successfully!");
+}
+</script>
+</body>
+  </html>
